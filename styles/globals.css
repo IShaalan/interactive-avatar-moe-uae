@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* EduSofx Learning Buddy Color Scheme */
+:root {
+  --primary-blue: #003399;
+  --primary-green: #33AA77;
+  --primary-dark: #1A2A53;
+  --secondary-light: #EAEAEC;
+  --secondary-white: #FFFFFF;
+  --text-primary: #1A2A53;
+  --text-secondary: #666666;
+  --text-light: #999999;
+  --border-light: #E5E5E5;
+  --shadow-light: rgba(0, 51, 153, 0.1);
+  --shadow-medium: rgba(0, 51, 153, 0.15);
+  --gradient-primary: linear-gradient(135deg, #003399 0%, #33AA77 100%);
+  --gradient-light: linear-gradient(135deg, #EAEAEC 0%, #FFFFFF 100%);
+}
+
+/* Base styles */
+body {
+  background: var(--secondary-white);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary-light);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* List styles */
+li {
+  list-style-type: square;
+  margin-left: 30px;
+  padding: 2px;
+}
+
+/* Custom utility classes */
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-light {
+  background: var(--gradient-light);
+}
+
+.shadow-edusofx {
+  box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+.shadow-edusofx-medium {
+  box-shadow: 0 8px 30px var(--shadow-medium);
+}
+
+.border-edusofx {
+  border: 1px solid var(--border-light);
+}
+
+.text-edusofx-primary {
+  color: var(--primary-blue);
+}
+
+.text-edusofx-green {
+  color: var(--primary-green);
+}
+
+.text-edusofx-dark {
+  color: var(--primary-dark);
+}
