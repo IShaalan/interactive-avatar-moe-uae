@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import { Metadata } from "next";
 import { Fira_Code as FontMono, Inter as FontSans } from "next/font/google";
 
+import { Analytics } from "@vercel/analytics/next"
+
 import NavBar from "@/components/NavBar";
 
 const fontSans = FontSans({
@@ -41,6 +43,7 @@ export default function RootLayout({
           <NavBar />
           <div className="flex-1">{children}</div>
         </main>
+        <Analytics />
       </body>
     </html>
   );
