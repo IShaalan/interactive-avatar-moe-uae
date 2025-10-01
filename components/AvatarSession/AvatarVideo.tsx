@@ -51,7 +51,8 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
             <Image
               fill
               alt="Avatar"
-              className="object-cover opacity-50 blur-sm"
+              //className="object-cover opacity-50 blur-sm"
+              className="object-contain w-full h-full"
               src="/avatar_cover_photo.png"
             />
           </div>
