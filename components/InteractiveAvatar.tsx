@@ -25,7 +25,7 @@ const DEFAULT_CONFIG: StartAvatarRequest = {
   avatarName: "3f3a0986438b4456babda9c7ae8a025e", // Custom avatar ID will be set here
   knowledgeId: "69435cd0d3ca458896b378d48eaf7ffa", // Custom knowledge base ID will be set here
   voice: {
-    rate: 0.75,
+    rate: Number(process.env.NEXT_PUBLIC_AVATAR_SPEAKING_RATE ?? 0.75),
     emotion: VoiceEmotion.EXCITED,
     model: ElevenLabsModel.eleven_flash_v2_5,
   },
