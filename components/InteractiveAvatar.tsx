@@ -5,12 +5,14 @@ import {
   VoiceEmotion,
   StartAvatarRequest,
   STTProvider,
-  ElevenLabsModel,
 } from "@heygen/streaming-avatar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
 
+import availableKnowledgeBases from "../available-knowledge-bases.json";
+
 import { Button } from "./Button";
+import { Select } from "./Select";
 import { AvatarVideo } from "./AvatarSession/AvatarVideo";
 import { useStreamingAvatarSession } from "./logic/useStreamingAvatarSession";
 import { AvatarControls } from "./AvatarSession/AvatarControls";
@@ -19,20 +21,28 @@ import { StreamingAvatarProvider, StreamingAvatarSessionState } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
 
+// Type for knowledge base items
+interface KnowledgeBase {
+  course_name: string;
+  knowledge_id: string;
+}
+
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.High,
   //avatarName: "Amina_ProfessionalLook_public", // Custom avatar ID will be set here
   avatarName: "3f3a0986438b4456babda9c7ae8a025e", // Custom avatar ID will be set here
-  knowledgeId: "69435cd0d3ca458896b378d48eaf7ffa", // Custom knowledge base ID will be set here
+  knowledgeId: "69435cd0d3ca458896b378d48eaf7ffa", // Default knowledge base ID
   voice: {
-    rate: Number(process.env.NEXT_PUBLIC_AVATAR_SPEAKING_RATE ?? 0.75),
-    emotion: VoiceEmotion.EXCITED,
-    model: ElevenLabsModel.eleven_flash_v2_5,
+    voiceId: "042173e02d18478384c64fdfe37ddd67",
+    rate: 1,
+    emotion: VoiceEmotion.SOOTHING,
+    //model: ElevenLabsModel.eleven_flash_v2_5,
   },
   language: "ar",
   voiceChatTransport: VoiceChatTransport.WEBSOCKET,
   sttSettings: {
     provider: STTProvider.GLADIA,
+    //provider: STTProvider.DEEPGRAM,
     confidence: 0.4,
   },
 };
@@ -43,6 +53,10 @@ function InteractiveAvatar() {
   const { startVoiceChat } = useVoiceChat();
 
   const mediaStream = useRef<HTMLVideoElement>(null);
+  const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
+    useState<KnowledgeBase | null>(null);
+  const [currentConfig, setCurrentConfig] =
+    useState<StartAvatarRequest>(DEFAULT_CONFIG);
 
   async function fetchAccessToken() {
     try {
@@ -96,7 +110,7 @@ function InteractiveAvatar() {
         console.log(">>>>> Avatar end message:", event);
       });
 
-      await startAvatar(DEFAULT_CONFIG);
+      await startAvatar(currentConfig);
 
       if (isVoiceChat) {
         await startVoiceChat();
@@ -105,6 +119,14 @@ function InteractiveAvatar() {
       console.error("Error starting avatar session:", error);
     }
   });
+
+  const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
+    setSelectedKnowledgeBase(knowledgeBase);
+    setCurrentConfig((prev) => ({
+      ...prev,
+      knowledgeId: knowledgeBase.knowledge_id,
+    }));
+  };
 
   useUnmount(() => {
     stopAvatar();
@@ -126,28 +148,36 @@ function InteractiveAvatar() {
         <div className="relative w-full h-[350px] overflow-hidden bg-gradient-to-br from-[#EAEAEC] to-white">
           <AvatarVideo ref={mediaStream} />
         </div>
-        
+
         {/* Controls Container - Fixed height and position */}
         <div className="flex-1 flex flex-col items-center justify-center p-6 border-t border-edusofx bg-white">
           {sessionState === StreamingAvatarSessionState.CONNECTED ? (
             <AvatarControls />
           ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+            <div className="flex flex-col gap-4 w-full max-w-md">
+              <div className="w-full">
+                <label className="block text-sm font-medium text-edusofx-dark mb-2">
+                  Select Knowledge Base:
+                </label>
+                <Select<KnowledgeBase>
+                  disabled={false}
+                  isSelected={(kb) =>
+                    selectedKnowledgeBase?.knowledge_id === kb.knowledge_id
+                  }
+                  options={availableKnowledgeBases.data}
+                  placeholder="Choose a course..."
+                  renderOption={(kb) => kb.course_name}
+                  value={selectedKnowledgeBase?.course_name || null}
+                  onSelect={handleKnowledgeBaseSelect}
+                />
+              </div>
               <Button
-                className="flex-1"
+                className="w-full"
                 size="lg"
                 variant="primary"
                 onClick={() => startSessionV2(true)}
               >
                 🎤 Start Voice Chat
-              </Button>
-              <Button
-                className="flex-1"
-                size="lg"
-                variant="secondary"
-                onClick={() => startSessionV2(false)}
-              >
-                💬 Start Text Chat
               </Button>
             </div>
           ) : (
