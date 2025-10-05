@@ -4,6 +4,18 @@
     {
       "course_name": "شرح الفيروسات والبريونات",
       "knowledge_id": "69435cd0d3ca458896b378d48eaf7ffa"
+    },
+    {
+      "course_name": "الوحدة الأولى: حضاراتنا العريقة",
+      "knowledge_id": "d4b9e0995b2741919e8a676d6ed28efa"
+    },
+    {
+      "course_name": "الوحدة الثانية: روح الاتحاد",
+      "knowledge_id": "2b0da4fa9ce4461f9182722cfd78bdb6"
+    },
+    {
+      "course_name": "التربية الأخلاقية",
+      "knowledge_id": "02c947c3409d4a94b4e1f09ecaba4bdb"
     }
   ],
   "message": "Success"
